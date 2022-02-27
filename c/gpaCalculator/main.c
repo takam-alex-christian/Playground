@@ -7,10 +7,17 @@ struct dataEntry{
 	float mark;
 };
 
-//int function validateEntry(&){
-//	
-//	return 0;
-//	}
+int validateEntry(struct dataEntry *entry,  char *err){
+	int response = 0;
+	if ( sizeof(entry->courseName) == 0){  response = 1; strcpy(err, "course name was empty");}
+	
+	if (entry->credit > 4 || entry->credit < 1){response = 1; strcpy(err, "invalid credit inserted");}
+	
+	if (entry->mark < 0 || entry->mark > 100){response = 1; strcpy(err, "invalid mark inserted");}
+	
+	return response; //so if the entry is validated, then reponse is unchanged
+	
+	}
 
 int main(){
 	//the user enters a subject as a string of chars, then its correspoding mark and credit
@@ -23,33 +30,62 @@ int main(){
 	
 	float marks[10];
 	int credits[10];
-	int courseNumber; //this will hold the number of courses entered by the user
+	char courseStatuses[10][25];
 	
-	float totalCredit;
-	float totalMark;
+	int courseNumber = 0; //this will hold the number of courses entered by the user
+	
+	float totalCredit = 0;
+	float totalMark= 0;
+	
+	float gpaCalculated = 0; //initialized to zero, to prevent querying garbage from memory
+	char gpaRemark[] = "";
+	
+	char err[256];// will hold error messaged, of course no longer than 256
 	
 	
 	printf("Enter data below to calculate your gpa \n");
 	printf("Course name, credit and mark is entered in a single line as such (name credit mark) \n");
 	printf("example:\"#1 course: physics 4 80\" \n\n");
 
-	//the summing loop;
-	for (size_t tmp = 0; tmp < sizeof(courses); tmp++){
+	
+	for (size_t c = 0; c < sizeof(courses); c++){
 		struct dataEntry tmp;
 		
-		printf("#%i course: ", tmp);
+		printf("#%i course: ", c);
 		scanf("%s %i %f", &tmp.courseName, &tmp.credit, &tmp.mark);
 		
-		if (sizeof(tmp.courseName) < 1 || tmp.credit )
-		
-		}
+		if(validateEntry(&tmp, err)){
+			
+			strcpy(courses[c], tmp.courseName);
+			credits[c] = tmp.credit;
+			marks[c] = tmp.mark;
+			
+			if ( marks[c] >= 60){strcpy(courseStatuses[c], "passed");}
+			else if (marks[c] < 60){strcpy(courseStatuses[c], "failed");}
+			//if the data provided by the student is valid, then we store them to memory along with the statuses.
+		}else{courseNumber = c; break;}
+	}
+	
+	printf("reason for breaking: \"%s\" \n\n",err);
 	
 	for (size_t i = 0; i < courseNumber; i++ ){
 		
+		totalMark += marks[i] * credits[i];
+		totalCredit += credits[i];
+		
+		printf("\n\n %s -> %s \n", courses[i], courseStatuses[i]);
 		
 	}
 	
-		system("pause");
+	gpaCalculated = totalMark/totalCredit;
+	
+	if (gpaCalculated >= 2 < 3){strcpy(gpaRemark, "Good!");}
+	else if (gpaCalculated >= 3 < 3.5){strcpy(gpaRemark, "very good!");}
+	else if (gpaCalculated >= 3.5 <= 4){strcpy(gpaRemark, "Excellent !!!!");}
+	
+	//now that all the logics have been carried out, let's display the results
+	printf("\n Your Gpa: %.2f [%s]", gpaCalculated, gpaRemark);
+	system("pause");
 	
 	return 0;
 	}

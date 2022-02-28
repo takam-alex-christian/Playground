@@ -46,7 +46,8 @@ int main(){
 	printf("Enter data below to calculate your gpa \n");
 	printf("Course name, credit and mark is entered in a single line as such (name credit mark) \n");
 	printf("example:\"#1 course: physics 4 80\" \n\n");
-
+	
+	printf("Enter an invalid entry such as a \'/\' fo credit to end data entry \n");
 	
 	for (size_t c = 0; c < sizeof(courses); c++){
 		struct dataEntry tmp;
@@ -54,7 +55,7 @@ int main(){
 		printf("#%i course: ", c);
 		scanf("%s %i %f", &tmp.courseName, &tmp.credit, &tmp.mark);
 		
-		if(validateEntry(&tmp, err)){
+		if(!validateEntry(&tmp, err)){
 			
 			strcpy(courses[c], tmp.courseName);
 			credits[c] = tmp.credit;
@@ -84,7 +85,7 @@ int main(){
 	else if (gpaCalculated >= 3.5 <= 4){strcpy(gpaRemark, "Excellent !!!!");}
 	
 	//now that all the logics have been carried out, let's display the results
-	printf("\n Your Gpa: %.2f [%s]", gpaCalculated, gpaRemark);
+	printf("\n Your Gpa: %.2f [%s] \n\n", gpaCalculated, gpaRemark);
 	system("pause");
 	
 	return 0;

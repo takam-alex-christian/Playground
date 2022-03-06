@@ -68,11 +68,17 @@ int convertToWord(char *numberEntry){//takes one string parameter
 	
 	for (size_t i = 0, j = strlen(numberEntry) - 1; i < strlen(numberEntry) && j >= 0; i++, j--){
 		
-		strcat(numberInWord, digitToWord[(int) numberEntry[i] - ZERO]);
-		strcat(numberInWord, " ");
-		strcat(numberInWord, positionToWord[j]);
-		strcat(numberInWord, " ");
 		
+		
+		if (j == 1 && (int) numberEntry[i] - ZERO != 1){
+			strcat(numberInWord, tensToWord[(int) numberEntry[i] - ZERO]);
+			strcat(numberInWord, " ");
+		}else{
+			strcat(numberInWord, digitToWord[(int) numberEntry[i] - ZERO]);
+			strcat(numberInWord, " ");
+			strcat(numberInWord, positionToWord[j]);
+			strcat(numberInWord, " ");
+		}
 //		switch(i){
 //			case 0:{
 //				strcat(numberInWord, digitToWord[(int) numberEntry[i] - 48]);

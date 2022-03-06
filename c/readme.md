@@ -1,1 +1,1 @@
-# C source code
+#The C projects directory
